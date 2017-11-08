@@ -2,7 +2,7 @@
 """
 Created on Wed Mar 22 17:27:34 2017
 
-@author: Administrator
+@author: Zezheng Wang 
 """
 import tensorflow as tf
 import scipy.io as sio 
@@ -17,7 +17,7 @@ alpha=10e-3
 beta=1
 style=['conv1_1', 'conv2_1', 'conv3_1', 'conv4_1', 'conv5_1']
 content=['conv4_2'];
-vgg_model_path='G:\ML&DL\VGG\imagenet-vgg-verydeep-16.mat';
+vgg_model_path='./model/imagenet-vgg-verydeep-16.mat';
 VGG_MEAN = [103.939, 116.779, 123.68]
 save_name='./res.jpg'
 #deal image
