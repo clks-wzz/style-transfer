@@ -75,27 +75,18 @@ def pooling2d(x, strides=2, method='MAX'):
     return y1
     
 def content_loss(layerx, layery):
-#    h=tf.shape(layerx)[3]
-#    w=tf.shape(layerx)[1]*tf.shape(layerx)[2]
     loss=0.5*tf.reduce_sum(tf.pow(layerx-layery,2))
     return loss
 
 def style_loss(layerx, layery):
     h=layerx.get_shape().as_list()[3]
-    w=layerx.get_shape().as_list()[1]*layerx.get_shape().as_list()[2]    
-#    print(layerx.shape, 'h=', h, 'w=', w)
+    w=layerx.get_shape().as_list()[1]*layerx.get_shape().as_list()[2]  
     x1=tf.reshape(layerx, [w, h])
     x2=tf.transpose(x1)
     x=tf.matmul(x2, x1)
     y1=tf.reshape(layery, [w, h])
     y2=tf.transpose(y1)
     y=tf.matmul(y2, y1)
-#    x=tf.matmul(tf.reshape(layerx, [h, w]), tf.reshape(layerx, [w, h]))
-#    y=tf.matmul(tf.reshape(layery, [h, w]), tf.reshape(layery, [w, h]))
-#    print('x.shape=', x.shape, 'y.shape=', y.shape)
-#    h=tf.cast(h, tf.float32)
-#    w=tf.cast(w, tf.float32)
-#    coe=tf.div(0.25, tf.multiply(tf.pow(h, 2), tf.pow(w, 2)))
     loss= tf.multiply(1./(4* h**2 * w**2),tf.reduce_sum(tf.pow(x-y, 2)))
     return loss
     
