@@ -31,9 +31,7 @@ image_content[0:][0:][0]-=VGG_MEAN[0]
 image_content[0:][0:][1]-=VGG_MEAN[1]
 image_content[0:][0:][2]-=VGG_MEAN[2]
 image_content=image_content.reshape(image_size)
-#image_content=image_content.reshape([224,224,3])
-#xImage=Image.fromarray(image_content.astype(np.uint8))
-#xImage.save(save_name)
+
 image_style=Image.open(os.path.join(image_path, 'style.jpg'))
 image_style=image_style.resize([256, 256])
 image_style=np.float32(image_style)
@@ -47,8 +45,7 @@ x2=tf.constant(image_style) #style
 x1=tf.reshape(x1, image_size)
 x2=tf.reshape(x2, image_size)
 goal=tf.Variable(image_content)
-#goal=tf.Variable(tf.random_normal(image_size))
-## deal vgg model
+
 vgg=sio.loadmat(vgg_model_path) 
 vgg=vgg['layers']
 #vgg[0][i][0][0][2][0][0] the params of ith layer
@@ -176,32 +173,6 @@ def conv_net(x, weights, bias, content_net, style_net):
     net=conv2d(net, tf.constant(weights['conv5_2']), tf.constant(bias['conv5_2']))
     net=conv2d(net, tf.constant(weights['conv5_3']), tf.constant(bias['conv5_3']))
     return cost
-#def conv_net(x, weights, bias):
-#    net=conv2d(x, tf.constant(weights['conv1_1']), tf.constant(bias['conv1_1']))
-#    net=conv2d(net, tf.constant(weights['conv1_2']), tf.constant(bias['conv1_2']))
-#    net=pooling2d(net,method='AVG')
-#    net=conv2d(net, tf.constant(weights['conv2_1']), tf.constant(bias['conv2_1']))
-#    net=conv2d(net, tf.constant(weights['conv2_2']), tf.constant(bias['conv2_2']))
-#    net=pooling2d(net,method='AVG')
-#    net=conv2d(net, tf.constant(weights['conv3_1']), tf.constant(bias['conv3_1']))
-#    net=conv2d(net, tf.constant(weights['conv3_2']), tf.constant(bias['conv3_2']))
-#    net=conv2d(net, tf.constant(weights['conv3_3']), tf.constant(bias['conv3_3']))
-#    net=pooling2d(net,method='AVG')
-#    net=conv2d(net, tf.constant(weights['conv4_1']), tf.constant(bias['conv4_1']))
-#    net=conv2d(net, tf.constant(weights['conv4_2']), tf.constant(bias['conv4_2']))
-#    net=conv2d(net, tf.constant(weights['conv4_3']), tf.constant(bias['conv4_3']))
-#    net=pooling2d(net,method='AVG')
-#    net=conv2d(net, tf.constant(weights['conv5_1']), tf.constant(bias['conv5_1']))
-#    net=conv2d(net, tf.constant(weights['conv5_2']), tf.constant(bias['conv5_2']))
-#    net=conv2d(net, tf.constant(weights['conv5_3']), tf.constant(bias['conv5_3']))
-#    return net
-
-#x1=tf.constant(tf.float32, image_content) #content
-#x2=tf.constant(tf.float32, image_style) #style
-#x1=tf.reshape(x1, image_size)
-#x2=tf.reshape(x2, image_size)
-#goal=tf.Variable(tf.float32, tf.random_normal(shape=list(image_content.shape))
-#goal_reshape=tf.image.resize(goal,shape=image_size)
 
 content_net=conv_net_content(x1, weights, bias)
 style_net=conv_net_style(x2, weights, bias)
@@ -219,11 +190,8 @@ with tf.Session() as sess:
         res[0:][0:][1]+=VGG_MEAN[1]
         res[0:][0:][2]+=VGG_MEAN[2]
         new_im = Image.fromarray(res.astype(np.uint8))  
-#        new_im = new_im.resize(res_size)
         new_im.save(save_name)
         fp = open(save_name,'r')
         fp.close()
-#        plt.imshow(new_im)
-#        plt.show()
         
 
